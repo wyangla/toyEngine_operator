@@ -1,0 +1,8 @@
+*.html
+*.project
+*.pydevproject
+*.log
+*.zip
+*.pyc
+logs
+/corpus/*
