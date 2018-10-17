@@ -43,7 +43,9 @@ class Unit_generator():
         for term in uProp4Terms:
             uPropJson = json.dumps(uProp4Terms[term])
             flatUnit = "%s %s %s %s %s %s %s"%(term, -1, -1, -1, uPropJson, docName, 1) # currentId, nextId, previousId, uPropJson, docId, status
-            yield term, flatUnit # for the convenience of check the existance of term in inverted-index
+            flatUnit = flatUnit.replace(": ", ":") # as the {} cannot contain the space inside, contract
+            flatUnit = flatUnit.replace(", ", ",")
+            yield flatUnit # for the convenience of check the existance of term in inverted-index
         
         
 

@@ -26,9 +26,7 @@ class InvIdx_operators():
     
     def add_doc(self, docPath):
         units = self.ug.flat_units(docPath)
-        for term, unit in units:
-            notExistanceFlag = self.engine.add_term(term)
-            print(notExistanceFlag)
+        for unit in units:
             self.engine.add_posting_unit(unit)
                 
     
