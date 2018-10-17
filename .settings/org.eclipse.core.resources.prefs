@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
 encoding//operators/InvIdx_operator.py=utf-8
-encoding//processors/Doc_processor.py=utf-8
+encoding//processors/Doc_processor_tf.py=utf-8
+encoding//unit_generator/Unit_generator.py=utf-8
+encoding//unit_generator/calculators/oh.py=utf-8
+encoding//unit_generator/calculators/tf.py=utf-8

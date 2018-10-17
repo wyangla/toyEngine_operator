@@ -16,9 +16,10 @@ import configs as cfg
 import os
 
 
-class Doc_process():
+
+# process the document and provide the term frequency information
+class Doc_processor_tf():
     def __init__(self):
-        self._termCounter = Counter()
         self._tokenizer = RegexpTokenizer(r'\w+')
         self._removeTerms = stopwords.words('english')
 
@@ -34,12 +35,13 @@ class Doc_process():
     # the docName is the relative path
     # /source/name
     def process(self, docPath = ""):
+        termCounter = Counter()
         with open(docPath, 'r') as f:
             doc = f.read()
         terms = self._tokenize(doc)
-        self._termCounter.update(terms)
-        docName = docPath.replace(cfg.corpusPath, '')
-        return docName, self._termCounter # ("/source/name", {"a":1, ..})
+        termCounter.update(terms)
+        docName = docPath.replace(cfg.corpusPath, '').replace('\\', '/')
+        return docName, termCounter # ("/source/name", {"a":1, ..})
      
      
          
@@ -54,7 +56,7 @@ if __name__ == '__main__':
             
             
     # process 10 docs for illustration
-    dp = Doc_process()
+    dp = Doc_processor_tf()
     cnt = 0
     for docPath in docPathList:
         docName, counterTemp = dp.process(docPath)
