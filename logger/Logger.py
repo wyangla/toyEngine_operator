@@ -18,7 +18,7 @@ class Logger():
     
     @classmethod
     def get_logger(self, name = 'test'):
-        lg = getLogger(name)
+        lg = getLogger(name + '.log')
         lg.setLevel(cfg.logLevel)
         
         fmt = Formatter('%(asctime)s [%(levelname)s] - %(filename)s:%(lineno)s %(message)s')
