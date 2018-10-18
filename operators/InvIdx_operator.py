@@ -6,6 +6,7 @@ Created on 17 Oct 2018
 '''
 
 import sys
+from data_structures.Post_unit import Post_unit
 sys.path.append('..')
 
 import configs as cfg
@@ -29,10 +30,10 @@ class InvIdx_operators():
     def add_doc(self, docPath):
         try:
             self.lg.debug('adding doc: %s'%docPath)
-            units = self.unitGenerator.flat_units(docPath)
+            units = self.unitGenerator.units(docPath)
             for unit in units:
-                # self.lg.debug('  adding unit: %s'%unit)
-                self.engine.add_posting_unit(unit)
+                # self.lg.debug('  adding unit: %s'%unit.flatten())
+                self.engine.add_posting_unit(unit.flatten())
         except:
             self.lg.warn(format_exc())
                 
@@ -61,7 +62,16 @@ class InvIdx_operators():
         
     
     def del_doc(self, docPath):
-        pass
+        try:
+            self.lg.debug('deleting doc: %s'%docPath)
+            units = self.unitGenerator.units(docPath)
+            for unit in units:
+                self.engine.load_index([unit.term]) # load the related posting list from disk into memory
+                # TODO: here is related to the scanning of posting list
+                # input a docName and return a list of pUnitIds, then use index.del_posting_unit to set the status
+        except:
+            self.lg.warn(format_exc())
+    
     
     
     # delete all docs from one source (docs in one sub directory of /corpus)

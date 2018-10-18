@@ -4,5 +4,5 @@
 # give -1 -1 -1 {"tf": 1, "oh": 1} \test\-Km-gkgaAJAx37yEHIERDg 1
 # place -1 -1 -1 {"tf": 1, "oh": 1} \test\-Km-gkgaAJAx37yEHIERDg 1
 
-from . import Unit_generator as ug
-Unit_generator = ug.Unit_generator # simplify the importing of class
+from .Unit_generator import Unit_generator
+# simplify the importing of class
