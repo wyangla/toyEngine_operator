@@ -65,6 +65,8 @@ class InvIdx_operators():
         
     
     def delete_doc(self, docPath):
+        # only setting the status in the mem, not persisted
+        
         affectedUnits = []
         try:
             self.lg.debug('deleting doc: %s'%docPath)
@@ -76,6 +78,7 @@ class InvIdx_operators():
             affectedUnits = list(self.engine.delete_doc(targetTerms, docName))
         except:
             self.lg.warn(format_exc())
+        
     
         return affectedUnits
     
