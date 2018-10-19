@@ -26,8 +26,8 @@ class Unit_generator():
         docName = ""
         uProp4Terms = {} # {'a': {'tf':2, 'oh':1}}
         for propField in cfg.uPropFields:
-            calculatorPath = cfg.uPropFields[propField] # 
-            propCalculator = importlib.import_module('.', calculatorPath).getIns()
+            calculatorPath = cfg.uPropFields[propField]
+            propCalculator = importlib.import_module('.', calculatorPath).getIns() # e.g. calculators.tf
             propGenerator = propCalculator.cal(docPath) # generator
             
             for docName, term, propDict in propGenerator:

@@ -9,7 +9,7 @@ Created on 17 Oct 2018
 import sys
 sys.path.append('..')
 
-from processors.Doc_processor_tf import Doc_processor_tf
+from processors import Doc_processor_tf
 
 
 
@@ -21,7 +21,10 @@ class oh():
     
     # generator return the 
     def cal(self, docPath):
-        docName, termCounter = self.doc_processor.process(docPath)
+        processedDoc = self.doc_processor.process(docPath)
+        docName = processedDoc.getDocName() 
+        termCounter = processedDoc.getTermCounter()
+        
         for term in termCounter:
             yield docName, term, {'oh':1}
             

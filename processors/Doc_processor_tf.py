@@ -14,6 +14,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 import configs as cfg
 import os
+from data_structures import Doc
 
 
 
@@ -39,9 +40,11 @@ class Doc_processor_tf():
         with open(docPath, 'r') as f:
             doc = f.read()
         terms = self._tokenize(doc)
-        termCounter.update(terms)
+        termCounter.update(terms) # ("/source/name", {"a":1, ..})
         docName = docPath.replace(cfg.corpusPath, '').replace('\\', '/')
-        return docName, termCounter # ("/source/name", {"a":1, ..})
+        
+        doc = Doc(docName, termCounter);
+        return doc
      
      
          

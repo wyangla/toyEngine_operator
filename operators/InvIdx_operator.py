@@ -7,6 +7,7 @@ Created on 17 Oct 2018
 
 import sys
 from data_structures.Post_unit import Post_unit
+from distributed.profile import process
 sys.path.append('..')
 
 import configs as cfg
@@ -15,6 +16,7 @@ from py4j.java_gateway import JavaGateway, GatewayParameters
 from unit_generator import Unit_generator 
 from logger import Logger
 from traceback import format_exc
+from processors import Doc_processor_tf
 
 
 
@@ -25,6 +27,7 @@ class InvIdx_operators():
         self.gateWay = JavaGateway(gateway_parameters = GatewayParameters(auto_convert = True)) # automatically convert python object to java object
         self.engine = self.gateWay.entry_point
         self.unitGenerator = Unit_generator()
+        self.docProcessor = Doc_processor_tf()
         
     
     def add_doc(self, docPath):
@@ -61,22 +64,36 @@ class InvIdx_operators():
             self.add_source(sourcePath)
         
     
-    def del_doc(self, docPath):
+    def delete_doc(self, docPath):
+        affectedUnits = []
         try:
             self.lg.debug('deleting doc: %s'%docPath)
-            units = self.unitGenerator.units(docPath)
-            for unit in units:
-                self.engine.load_index([unit.term]) # load the related posting list from disk into memory
-                # TODO: here is related to the scanning of posting list
-                # input a docName and return a list of pUnitIds, then use index.del_posting_unit to set the status
+            processedDoc = self.docProcessor.process(docPath)
+            
+            targetTerms = processedDoc.getTerms()
+            docName = processedDoc.getDocName()
+            
+            affectedUnits = list(self.engine.delete_doc(targetTerms, docName))
         except:
             self.lg.warn(format_exc())
     
+        return affectedUnits
     
     
     # delete all docs from one source (docs in one sub directory of /corpus)
     def del_source(self, sourcePath):
-        pass
+        docPathList = []
+        
+        for docPathInfo in os.walk(sourcePath):
+            mainPath = docPathInfo[0]
+            docNameList = docPathInfo[-1]
+            for docName in docNameList:
+                docPathList.append(os.path.join(mainPath, docName))
+                
+        for docPath in docPathList:
+            self.delete_doc(docPath)
+        
+        self.lg.info('source deleted: %s'%sourcePath)
     
     
     def search(self):
@@ -97,6 +114,8 @@ if __name__ == '__main__':
 #     invIdxOp.add_source(sourcePath)
 
     # test add_all
-    invIdxOp.add_all()
-    
+#     invIdxOp.add_all()
+
+    # test delete_doc
+    print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
     
