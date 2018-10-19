@@ -18,12 +18,12 @@ class Logger():
     
     @classmethod
     def get_logger(self, name = 'test'):
-        lg = getLogger(name + '.log')
+        lg = getLogger(name)
         lg.setLevel(cfg.logLevel)
         
         fmt = Formatter('%(asctime)s [%(levelname)s] - %(filename)s:%(lineno)s %(message)s')
         
-        fhandler = handlers.RotatingFileHandler('./' + name, mode = 'a', maxBytes = 1024 * 1024, backupCount = 3)
+        fhandler = handlers.RotatingFileHandler('./' + name + '.log', mode = 'a', maxBytes = 1024 * 1024, backupCount = 3)
         fhandler.setFormatter(fmt)
         
         shandler = StreamHandler()

@@ -102,6 +102,12 @@ class InvIdx_operators():
     def search(self):
         pass
     
+    def show(self):
+        print(self.engine.show())
+        
+    def persist_index(self):
+        self.engine.persist_index()
+    
     
     
 if __name__ == '__main__':
@@ -118,8 +124,13 @@ if __name__ == '__main__':
 #     invIdxOp.add_source(sourcePath)
 
     # test add_all
-#     invIdxOp.add_all()
-
+    invIdxOp.add_all()
+    invIdxOp.persist_index()
+    
     # test delete_doc
-    print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
+#     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
+    
+    # test delete_source
+    invIdxOp.del_source(cfg.corpusPath + "/test_1")
+    invIdxOp.del_source(cfg.corpusPath + "/test_2")
     
