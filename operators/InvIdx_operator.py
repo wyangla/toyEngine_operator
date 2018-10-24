@@ -30,18 +30,34 @@ class InvIdx_operators():
         self.docProcessor = Doc_processor_tf()
         
     
+#     def add_doc(self, docPath):
+#         try:
+#             self.lg.debug('adding doc: %s'%docPath)
+#             units = self.unitGenerator.units(docPath)
+#             for unit in units:
+#                 # self.lg.debug('  adding unit: %s'%unit.flatten())
+#                 self.engine.add_posting_unit(unit.flatten())
+#         except:
+#             self.lg.warn(format_exc())
+                
+                
     def add_doc(self, docPath):
         try:
             self.lg.debug('adding doc: %s'%docPath)
             units = self.unitGenerator.units(docPath)
+            
+            persistedUnits = []
             for unit in units:
-                # self.lg.debug('  adding unit: %s'%unit.flatten())
-                self.engine.add_posting_unit(unit.flatten())
+                persistedUnits.append(unit.flatten())
+                docName = unit.docId # TODO: not very nice
+            
+            self.engine.add_doc(persistedUnits, docName)
         except:
             self.lg.warn(format_exc())
                 
     
     # add all docs from one source (docs in one sub directory of /corpus)
+    # TODO: change to multi-processing, need the logic of dividing the work load
     def add_source(self, sourcePath):
         docPathList = []
         
@@ -84,6 +100,7 @@ class InvIdx_operators():
     
     
     # delete all docs from one source (docs in one sub directory of /corpus)
+    # TODO: change to multi-processing, need the logic of dividing the work load
     def del_source(self, sourcePath):
         docPathList = []
         
@@ -99,8 +116,12 @@ class InvIdx_operators():
         self.lg.info('source deleted: %s'%sourcePath)
     
     
-    def search(self):
-        pass
+    # search without further ranking
+    def search(self, queryTerms = []):
+        relatedDocumentScores = dict(self.engine.search(queryTerms))
+        for doc, score in relatedDocumentScores.items():
+            print(doc + '\t' + str(score))
+        
     
     def show(self):
         print(self.engine.show())
@@ -111,7 +132,7 @@ class InvIdx_operators():
     
     
 if __name__ == '__main__':
-    print(type(Unit_generator))
+#     print(type(Unit_generator))
     
     invIdxOp = InvIdx_operators()
     
@@ -131,6 +152,13 @@ if __name__ == '__main__':
 #     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
     
     # test delete_source
-    invIdxOp.del_source(cfg.corpusPath + "/test_1")
-    invIdxOp.del_source(cfg.corpusPath + "/test_2")
-    
+#     import time
+#     t1 = time.time()
+#     invIdxOp.del_source(cfg.corpusPath + "/test_1")
+#     invIdxOp.del_source(cfg.corpusPath + "/test_2")
+#     t2 = time.time()
+#     invIdxOp.lg.info("deleting takes: %ss"%(str(t2 - t1)))
+
+    # test search
+    invIdxOp.search(["wanted", "tasty", "asdfasdfa"])
+     
