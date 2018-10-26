@@ -27,6 +27,7 @@ class Doc_processor_tf():
 
     def _tokenize(self, doc):
         terms = self._tokenizer.tokenize(doc)
+        terms = list(map(lambda string : string.lower(), terms))
         for t in terms:
             if t in self._removeTerms: # remove the stop words
                 terms.remove(t)
@@ -62,7 +63,9 @@ if __name__ == '__main__':
     dp = Doc_processor_tf()
     cnt = 0
     for docPath in docPathList:
-        docName, counterTemp = dp.process(docPath)
+        doc = dp.process(docPath)
+        docName = doc.getDocName()
+        counterTemp = doc.getTermCounter() 
         print(docName)
         print(counterTemp)
         print()

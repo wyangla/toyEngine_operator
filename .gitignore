@@ -2,6 +2,7 @@
 *.project
 *.pydevproject
 *.log
+*.log.*
 *.zip
 *.pyc
 logs

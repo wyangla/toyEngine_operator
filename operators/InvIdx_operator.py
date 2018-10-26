@@ -145,20 +145,25 @@ if __name__ == '__main__':
 #     invIdxOp.add_source(sourcePath)
 
     # test add_all
-    invIdxOp.add_all()
-    invIdxOp.persist_index()
+#     invIdxOp.add_all()
+#     invIdxOp.persist_index()
     
     # test delete_doc
 #     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
     
-    # test delete_source
+    # test search
 #     import time
 #     t1 = time.time()
-#     invIdxOp.del_source(cfg.corpusPath + "/test_1")
-#     invIdxOp.del_source(cfg.corpusPath + "/test_2")
+#     invIdxOp.search(["wanted", "tasty", "asdfasdfa"]) # 51TLGhFncBnppaBN5vHlcw; wanted tf 1 df 6; N 100; tfidf 2.4507285734080293
 #     t2 = time.time()
 #     invIdxOp.lg.info("deleting takes: %ss"%(str(t2 - t1)))
-
-    # test search
-    invIdxOp.search(["wanted", "tasty", "asdfasdfa"])
-     
+    
+    # test delete_source
+    import time
+    t1 = time.time()
+    invIdxOp.del_source(cfg.corpusPath + "/test_1")
+    invIdxOp.del_source(cfg.corpusPath + "/test_2")
+    t2 = time.time()
+    invIdxOp.lg.info("deleting takes: %ss"%(str(t2 - t1)))
+    invIdxOp.engine.reload_index()
+      
