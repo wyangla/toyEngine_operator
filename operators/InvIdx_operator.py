@@ -22,8 +22,8 @@ from processors import Doc_processor_tf
 
 class InvIdx_operators():
     
-    def __init__(self, logger = Logger.get_logger('InvIdx_operators')):
-        self.lg = logger
+    def __init__(self, logger = None):
+        self.lg = logger or Logger.get_logger('InvIdx_operators')
         self.gateWay = JavaGateway(gateway_parameters = GatewayParameters(auto_convert = True)) # automatically convert python object to java object
         self.engine = self.gateWay.entry_point
         self.unitGenerator = Unit_generator()
@@ -145,25 +145,27 @@ if __name__ == '__main__':
 #     invIdxOp.add_source(sourcePath)
 
     # test add_all
-#     invIdxOp.add_all()
-#     invIdxOp.persist_index()
+    invIdxOp.add_all()
+    invIdxOp.persist_index()
     
     # test delete_doc
 #     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
+#     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_2/lsoSqIrrDbQvWpMvsSj2xw"))   # term_max_tf of "wanted" 2 -> 1
+
     
     # test search
 #     import time
 #     t1 = time.time()
 #     invIdxOp.search(["wanted", "tasty", "asdfasdfa"]) # 51TLGhFncBnppaBN5vHlcw; wanted tf 1 df 6; N 100; tfidf 2.4507285734080293
 #     t2 = time.time()
-#     invIdxOp.lg.info("deleting takes: %ss"%(str(t2 - t1)))
+#     invIdxOp.lg.info("searching takes: %ss"%(str(t2 - t1)))
     
     # test delete_source
-    import time
-    t1 = time.time()
-    invIdxOp.del_source(cfg.corpusPath + "/test_1")
-    invIdxOp.del_source(cfg.corpusPath + "/test_2")
-    t2 = time.time()
-    invIdxOp.lg.info("deleting takes: %ss"%(str(t2 - t1)))
-    invIdxOp.engine.reload_index()
+#     import time
+#     t1 = time.time()
+#     invIdxOp.del_source(cfg.corpusPath + "/test_1")
+#     invIdxOp.del_source(cfg.corpusPath + "/test_2")
+#     t2 = time.time()
+#     invIdxOp.lg.info("deleting takes: %ss"%(str(t2 - t1)))
+#     invIdxOp.engine.reload_index()
       

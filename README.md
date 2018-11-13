@@ -1,3 +1,2 @@
 # toyEngine_operator
-Operator of toyEngine in Python
-test
+![toyEngine_operator_architecture.jpg](./figs/toyEngine_operator_architecture.jpg)
