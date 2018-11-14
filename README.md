@@ -1,2 +1,2 @@
 # toyEngine_operator
-![toyEngine_operator_architecture.png](./figs/toyEngine_operator_architecture.png)
+![toyEngine_operator_architecture.jpg](./figs/toyEngine_operator_architecture.jpg)
