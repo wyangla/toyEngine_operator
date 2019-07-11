@@ -3,6 +3,7 @@ encoding//data_structures/Doc.py=utf-8
 encoding//data_structures/Post_unit.py=utf-8
 encoding//logger/Logger.py=utf-8
 encoding//operators/InvIdx_operator.py=utf-8
+encoding//processors/Doc_processor.py=utf-8
 encoding//processors/Doc_processor_ch.py=utf-8
 encoding//processors/Doc_processor_tf.py=utf-8
 encoding//unit_generator/Unit_generator.py=utf-8

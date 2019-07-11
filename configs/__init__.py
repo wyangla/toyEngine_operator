@@ -12,5 +12,5 @@ uPropFields = {
 logLevel = 'DEBUG'
 
 
-languageProcessorMap = {'English': 'Doc_processor_tf',
-                        'Chinese': 'Doc_processor_ch'}
+languageProcessorMap = {'English': 'processors.Doc_processor_tf',
+                        'Chinese': 'processors.Doc_processor_ch'}    # TODO: add language detector
