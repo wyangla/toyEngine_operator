@@ -10,3 +10,7 @@ uPropFields = {
     }
 
 logLevel = 'DEBUG'
+
+
+languageProcessorMap = {'English': 'Doc_processor_tf',
+                        'Chinese': 'Doc_processor_ch'}
