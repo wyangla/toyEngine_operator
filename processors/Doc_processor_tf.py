@@ -32,6 +32,12 @@ class Doc_processor_tf():
             if t in self._removeTerms: # remove the stop words
                 terms.remove(t)
         return terms
+
+
+    def getDocName(self, docPath = ""):
+        docName = docPath.replace(cfg.corpusPath, '').replace('\\', '/')
+        return docName
+     
      
     # root/corpus/source/docNames
     # the docName is the relative path
@@ -42,7 +48,7 @@ class Doc_processor_tf():
             doc = f.read()
         terms = self._tokenize(doc)
         termCounter.update(terms) # ("/source/name", {"a":1, ..})
-        docName = docPath.replace(cfg.corpusPath, '').replace('\\', '/')
+        docName = self.getDocName(docPath)
         
         doc = Doc(docName, termCounter);
         return doc

@@ -82,21 +82,35 @@ class InvIdx_operators():
     
     def delete_doc(self, docPath):
         # only setting the status in the mem, not persisted
-        
+         
         affectedUnits = []
         try:
             self.lg.debug('deleting doc: %s'%docPath)
             processedDoc = self.docProcessor.process(docPath)
-            
+             
             targetTerms = processedDoc.getTerms()
             docName = processedDoc.getDocName()
-            
+             
             affectedUnits = list(self.engine.delete_doc(targetTerms, docName))
         except:
             self.lg.warn(format_exc())
-        
-    
+         
+     
         return affectedUnits
+
+#     def delete_doc(self, docPath):
+#         # only setting the status in the mem, not persisted
+#         
+#         affectedUnits = []
+#         try:
+#             self.lg.debug('deleting doc: %s'%docPath)
+#             docName = self.docProcessor.getDocName(docPath)
+#             affectedUnits = list(self.engine.delete_doc(docName))
+#         except:
+#             self.lg.warn(format_exc())
+#         
+#     
+#         return affectedUnits
     
     
     # delete all docs from one source (docs in one sub directory of /corpus)
