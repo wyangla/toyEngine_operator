@@ -9,7 +9,7 @@ Created on 17 Oct 2018
 import sys
 sys.path.append('..')
 
-from processors import Doc_processor_tf
+from processors import Doc_processor
 
 
 
@@ -17,7 +17,7 @@ from processors import Doc_processor_tf
 class tf():
     
     def __init__(self):
-        self.doc_processor = Doc_processor_tf()
+        self.doc_processor = Doc_processor()
     
     # generator return the 
     def cal(self, docPath):

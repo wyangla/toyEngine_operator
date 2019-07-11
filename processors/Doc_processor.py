@@ -37,10 +37,17 @@ class Doc_processor():
         return terms
 
 
-    def getDocName(self, docPath = ""):
-        docName = docPath.replace(cfg.corpusPath, '').replace(os.sep, '/')
+    def getDocName(self, docPath = ""):    # full docName, i.e. with source path. e.g. /test_1/EKAN4jw3LsE3631feSaA_g
+        docName = docPath.replace(cfg.corpusPath, '').replace(os.sep, '/') # manually change to linux style is for avoid \t in windows
         return docName
-     
+    
+    
+    def getSubDocNameDirPath(self, docPath = ""):
+        docName = self.getDocName(docPath)
+        sepIdx = docName.rfind('/')
+        subDocName =  docName[sepIdx + 1:]    # not start with /
+        return subDocName
+    
      
     def _detect_language(self, doc):
         languageNam = 'English'
@@ -50,12 +57,11 @@ class Doc_processor():
     # store the doc processing result to the same directory as the raw document
     def _persist_processed(self, terms, docPath):
         processedDoc = ' '.join(terms)
-        
         sepIdx = docPath.rfind(os.sep)
         docDirPath = docPath[:sepIdx]    # not end with /
-        docName =  docPath[sepIdx + 1:]    # not start with /
+        subDocName =  docPath[sepIdx + 1:]    # not start with /
         
-        with open(docDirPath + os.sep + cfg.processedDocNameFormat%docName, 'w') as f:    # '__adfasfa'
+        with open(docDirPath + os.sep + cfg.processedDocNamePrefix + subDocName, 'w') as f:    # '__adfasfa'
             f.write(processedDoc)
         
      

@@ -6,8 +6,6 @@ Created on 17 Oct 2018
 '''
 
 import sys
-from data_structures.Post_unit import Post_unit
-from distributed.profile import process
 sys.path.append('..')
 
 import configs as cfg
@@ -16,7 +14,7 @@ from py4j.java_gateway import JavaGateway, GatewayParameters
 from unit_generator import Unit_generator 
 from logger import Logger
 from traceback import format_exc
-from processors import Doc_processor_tf
+from processors import Doc_processor
 
 
 
@@ -27,7 +25,7 @@ class InvIdx_operators():
         self.gateWay = JavaGateway(gateway_parameters = GatewayParameters(auto_convert = True)) # automatically convert python object to java object
         self.engine = self.gateWay.entry_point
         self.unitGenerator = Unit_generator()
-        self.docProcessor = Doc_processor_tf()
+        self.docProcessor = Doc_processor()
         
     
 #     def add_doc(self, docPath):
@@ -43,15 +41,21 @@ class InvIdx_operators():
                 
     def add_doc(self, docPath):
         try:
-            self.lg.debug('adding doc: %s'%docPath)
-            units = self.unitGenerator.units(docPath)
-            
-            persistedUnits = []
-            for unit in units:
-                persistedUnits.append(unit.flatten())
-                docName = unit.docId # TODO: not very nice
-            
-            self.engine.add_doc(persistedUnits, docName)
+            docName = self.docProcessor.getDocName(docPath)    # full docName, e.g. /test_1/EKAN4jw3LsE3631feSaA_g
+            if not cfg.processedDocNamePrefix in docName:
+                
+                self.lg.debug('adding doc: %s'%docPath)
+                units = self.unitGenerator.units(docPath)
+                
+                persistedUnits = []
+                for unit in units:
+                    persistedUnits.append(unit.flatten())
+                    docName = unit.docId # TODO: not very nice
+                
+                self.engine.add_doc(persistedUnits, docName)
+                
+            else:
+                pass    # processed file
         except:
             self.lg.warn(format_exc())
                 
@@ -80,18 +84,26 @@ class InvIdx_operators():
             self.add_source(sourcePath)
         
     
+    # TODO: change
     def delete_doc(self, docPath):
         # only setting the status in the mem, not persisted
          
         affectedUnits = []
         try:
             self.lg.debug('deleting doc: %s'%docPath)
-            processedDoc = self.docProcessor.process(docPath)
-             
-            targetTerms = processedDoc.getTerms()
-            docName = processedDoc.getDocName()
-             
-            affectedUnits = list(self.engine.delete_doc(targetTerms, docName))
+            docName = self.docProcessor.getDocName(docPath)    # docName with source
+            
+            if not cfg.processedDocNamePrefix in docName:    # delete also make use of the original name, the __proc__ should be transparent to the user
+                
+                subDocName = self.docProcessor.getSubDocNameDirPath(docPath)    # only the lowest layer, no source dir path
+                processedDocPath = docPath.replace(subDocName, cfg.processedDocNamePrefix + subDocName)
+                with open(processedDocPath, 'r') as f:
+                    targetTerms = f.read().split(' ')    # get target terms from the processed files instead of process them again
+                
+                affectedUnits = list(self.engine.delete_doc(targetTerms, docName))
+                
+            else:
+                pass
         except:
             self.lg.warn(format_exc())
          
@@ -163,7 +175,7 @@ if __name__ == '__main__':
     invIdxOp.persist_index()
     
     # test delete_doc
-#     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
+    print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
 #     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_2/lsoSqIrrDbQvWpMvsSj2xw"))   # term_max_tf of "wanted" 2 -> 1
 
     

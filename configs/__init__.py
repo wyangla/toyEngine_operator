@@ -15,4 +15,4 @@ logLevel = 'DEBUG'
 languageProcessorMap = {'English': 'processors.processor_plugins.Processor_plugin_en',
                         'Chinese': 'processors.processor_plugins.Processor_plugin_en'}    # TODO: add language detector
 
-processedDocNameFormat = '__proc__%s'
+processedDocNamePrefix = '__proc__'
