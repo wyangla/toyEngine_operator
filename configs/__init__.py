@@ -12,5 +12,7 @@ uPropFields = {
 logLevel = 'DEBUG'
 
 
-languageProcessorMap = {'English': 'processors.Doc_processor_tf',
-                        'Chinese': 'processors.Doc_processor_ch'}    # TODO: add language detector
+languageProcessorMap = {'English': 'processors.processor_plugins.Processor_plugin_en',
+                        'Chinese': 'processors.processor_plugins.Processor_plugin_en'}    # TODO: add language detector
+
+processedDocNameFormat = '__proc__%s'
