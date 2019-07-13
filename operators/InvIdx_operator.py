@@ -50,7 +50,6 @@ class InvIdx_operators():
                 persistedUnits = []
                 for unit in units:
                     persistedUnits.append(unit.flatten())
-                    docName = unit.docId # TODO: not very nice
                 
                 self.engine.add_doc(persistedUnits, docName)
                 
@@ -163,7 +162,10 @@ if __name__ == '__main__':
     invIdxOp = InvIdx_operators()
     
     # test add_doc
+    # and cal_termIdf
 #     invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, '-Km-gkgaAJAx37yEHIERDg'))
+#     invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'Ebggx4Zlc4VWReJMG1nT6w'))
+#     invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'ckUKRR2BV7wg9ehIRiZ6aw'))
     
     
     # test add_source
@@ -175,7 +177,7 @@ if __name__ == '__main__':
     invIdxOp.persist_index()
     
     # test delete_doc
-    print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
+#     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_1/EKAN4jw3LsE3631feSaA_g"))
 #     print(invIdxOp.delete_doc(cfg.corpusPath + "/test_2/lsoSqIrrDbQvWpMvsSj2xw"))   # term_max_tf of "wanted" 2 -> 1
 
     

@@ -53,7 +53,7 @@ class Unit_generator():
         docName, uProp4Terms = self.pUnit_properties(docPath)
         for term in uProp4Terms:
             uProp = uProp4Terms[term]
-            pUnit = Post_unit(term = term, uProp = uProp, docId = docName)
+            pUnit = Post_unit(term = term, uProp = uProp)
             yield pUnit # for the convenience of use the information along with the pUnit
         
         
