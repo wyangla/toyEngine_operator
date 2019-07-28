@@ -37,8 +37,10 @@ class Doc_processor():
         return terms
 
 
-    def getDocName(self, docPath = ""):    # full docName, i.e. with source path. e.g. /test_1/EKAN4jw3LsE3631feSaA_g
-        docName = docPath.replace(cfg.corpusPath, '').replace(os.sep, '/') # manually change to linux style is for avoid \t in windows
+    def getDocName(self, docPath = ""):    
+        # full docName, i.e. with source path. e.g. /test_1/EKAN4jw3LsE3631feSaA_g
+        # eliminate the preceding '/'
+        docName = docPath.replace(cfg.corpusPath + os.sep, '').replace(os.sep, '/') # manually change to linux style is for avoid \t in windows
         return docName
     
     
@@ -58,8 +60,10 @@ class Doc_processor():
     def _persist_processed(self, terms, docPath):
         processedDoc = ' '.join(terms)
         docFullName = self.getDocName(docPath)
+        cachedDocPath = cfg.cachedFilePath + os.sep + docFullName
         
-        with open(cfg.cachedFilePath + os.sep + docFullName, 'w') as f:    # '__adfasfa'
+        os.makedirs(os.path.dirname(cachedDocPath), exist_ok = True)
+        with open(cachedDocPath, 'w',  ) as f:    # '__adfasfa'
             f.write(processedDoc)
         
      
