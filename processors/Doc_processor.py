@@ -57,11 +57,9 @@ class Doc_processor():
     # store the doc processing result to the same directory as the raw document
     def _persist_processed(self, terms, docPath):
         processedDoc = ' '.join(terms)
-        sepIdx = docPath.rfind(os.sep)
-        docDirPath = docPath[:sepIdx]    # not end with /
-        subDocName =  docPath[sepIdx + 1:]    # not start with /
+        docFullName = self.getDocName(docPath)
         
-        with open(docDirPath + os.sep + cfg.processedDocNamePrefix + subDocName, 'w') as f:    # '__adfasfa'
+        with open(cfg.cachedFilePath + os.sep + docFullName, 'w') as f:    # '__adfasfa'
             f.write(processedDoc)
         
      
