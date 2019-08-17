@@ -1,5 +1,5 @@
 rawCorpusPath = r'C:\desktop\workspace\dissertation_imp\dataset\yelp_dataset\dataset\review.json' # for testing
-testCorpusPath = r'C:\desktop\workspace\toyProject\toyEngine_operator\corpus\test_1' # for testing, sub directions contains docs from different sources
+testCorpusPath = r'C:\desktop\workspace\toyProject\toyEngine_operator\corpus\test_3'  # contain 3 docs for testing
 
 corpusPath = r'C:\desktop\workspace\toyProject\toyEngine_operator\corpus'
 cachedFilePath = r'C:\desktop\workspace\toyProject\toyEngine\persistance\cached'    # for persist the processed docs
@@ -19,3 +19,5 @@ languageProcessorMap = {'English': 'processors.processor_plugins.Processor_plugi
                         'Chinese': 'processors.processor_plugins.Processor_plugin_en'}    # TODO: add language detector
 
 processedDocNamePrefix = '__proc__'
+
+cpuNum = 4;

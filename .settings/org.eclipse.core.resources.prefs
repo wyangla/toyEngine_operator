@@ -9,3 +9,4 @@ encoding//processors/processor_plugins/Processor_plugin_en.py=utf-8
 encoding//unit_generator/Unit_generator.py=utf-8
 encoding//unit_generator/calculators/oh.py=utf-8
 encoding//unit_generator/calculators/tf.py=utf-8
+encoding//utils/__init__.py=utf-8

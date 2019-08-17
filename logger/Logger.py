@@ -21,16 +21,17 @@ class Logger():
         lg = getLogger(name)
         lg.setLevel(cfg.logLevel)
         
-        fmt = Formatter('%(asctime)s [%(levelname)s] - %(filename)s:%(lineno)s %(message)s')
-        
-        fhandler = handlers.RotatingFileHandler('./' + name + '.log', mode = 'a', maxBytes = 1024 * 1024, backupCount = 3)
-        fhandler.setFormatter(fmt)
-        
-        shandler = StreamHandler()
-        shandler.setFormatter(fmt)
-        
-        lg.addHandler(fhandler)
-        lg.addHandler(shandler)
+        if not lg.handlers:    # ref: https://stackoverflow.com/questions/6729268/log-messages-appearing-twice-with-python-logging
+            fmt = Formatter('%(asctime)s [%(levelname)s] - %(filename)s:%(lineno)s %(message)s')
+            
+            fhandler = handlers.RotatingFileHandler('./' + name + '.log', mode = 'a', maxBytes = 1024 * 1024, backupCount = 3)
+            fhandler.setFormatter(fmt)
+            
+            shandler = StreamHandler()
+            shandler.setFormatter(fmt)
+            
+            lg.addHandler(fhandler)
+            lg.addHandler(shandler)
         
         return lg
     

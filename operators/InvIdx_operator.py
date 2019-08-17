@@ -15,6 +15,8 @@ from unit_generator import Unit_generator
 from logger import Logger
 from traceback import format_exc
 from processors import Doc_processor
+from utils import *
+from multiprocessing import Pool
 
 
 
@@ -39,25 +41,37 @@ class InvIdx_operators():
 #             self.lg.warn(format_exc())
                 
                 
-    def add_doc(self, docPath):
-        try:
-            docName = self.docProcessor.getDocName(docPath)    # full docName, e.g. /test_1/EKAN4jw3LsE3631feSaA_g
-            if not cfg.processedDocNamePrefix in docName:
+    def add_doc(self, docPathList):
+        self._add_doc(docPathList)
                 
-                self.lg.debug('adding doc: %s'%docPath)
-                units = self.unitGenerator.units(docPath)
                 
-                persistedUnits = []
-                for unit in units:
-                    persistedUnits.append(unit.flatten())
-                
-                self.engine.add_doc(persistedUnits, docName)
-                
-            else:
-                pass    # processed file
-        except:
-            self.lg.warn(format_exc())
-                
+    @classmethod
+    def _add_doc(cls, docPathList):
+        self = cls()
+        # compatible with the previous single doc name input
+        if type(docPathList) == type(""):
+            docPathList = [docPathList]
+            
+        for docPath in docPathList:
+            try:
+                docName = self.docProcessor.getDocName(docPath)    # full docName, e.g. /test_1/EKAN4jw3LsE3631feSaA_g
+                if not cfg.processedDocNamePrefix in docName:
+                    
+                    self.lg.debug('adding doc: %s'%docPath)
+                    units = self.unitGenerator.units(docPath)
+                    
+                    persistedUnits = []
+                    for unit in units:
+                        persistedUnits.append(unit.flatten())
+                    
+                    # print(persistedUnits)    # TODO: test
+                    self.engine.add_doc(persistedUnits, docName)
+                    
+                else:
+                    pass    # processed file
+            except Exception as e:
+                self.lg.warn(format_exc())
+
     
     # add all docs from one source (docs in one sub directory of /corpus)
     # TODO: change to multi-processing, need the logic of dividing the work load
@@ -70,8 +84,19 @@ class InvIdx_operators():
             for docName in docNameList:
                 docPathList.append(os.path.join(mainPath, docName))
                 
-        for docPath in docPathList:
-            self.add_doc(docPath)
+        workloads = Task_spliter.get_workLoads_terms(cfg.cpuNum, docPathList)
+        p = Pool(cfg.cpuNum)
+        
+        for workload in workloads:
+            print('-->')
+            print(workload)
+            p.apply_async(func=InvIdx_operators._add_doc, args = (workload,))
+        
+        p.close()
+        p.join()
+
+#         for docPath in docPathList:
+#             self.add_doc(docPath)
         
         self.lg.info('source added: %s'%sourcePath)
         
@@ -163,17 +188,17 @@ if __name__ == '__main__':
     
     # test add_doc
     # and cal_termIdf
-#     invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, '-Km-gkgaAJAx37yEHIERDg'))
-#     invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'Ebggx4Zlc4VWReJMG1nT6w'))
-#     invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'ckUKRR2BV7wg9ehIRiZ6aw'))
+    invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'test_doc_len_1'))
+    invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'test_doc_len_2'))
+    invIdxOp.add_doc(os.path.join(cfg.testCorpusPath, 'test_doc_len_3'))
     
     
     # test add_source
-#     sourcePath = os.path.join(cfg.corpusPath, 'test_1')
+#     sourcePath = os.path.join(cfg.corpusPath, 'test_3')
 #     invIdxOp.add_source(sourcePath)
 
     # test add_all
-    invIdxOp.add_all()
+#     invIdxOp.add_all()
     invIdxOp.persist_index()
     
     # test delete_doc
